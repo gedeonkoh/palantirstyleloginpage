@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Palantir | Authorized Access</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a0f1a'/><rect x='20' y='20' width='60' height='60' fill='none' stroke='%2306b6d4' stroke-width='2'/><rect x='30' y='30' width='40' height='40' fill='none' stroke='%2306b6d4' stroke-width='2' transform='rotate(45 50 50)'/><circle cx='50' cy='50' r='8' fill='%2306b6d4' opacity='0.8'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            'palantir': ['Inter', 'system-ui', 'sans-serif'],
+            'mono': ['JetBrains Mono', 'Fira Code', 'monospace'],
+          },
+          colors: {
+            'palantir': {
+              'bg': '#05080f',
+              'surface': '#0a0f1a',
+              'surface-2': '#0f1623',
+              'border': '#1e293b',
+              'primary': '#06b6d4',
+              'accent': '#0891b2',
+              'text': '#e2e8f0',
+              'text-dim': '#64748b',
+            }
+          },
+          backgroundImage: {
+            'grid-pattern': "linear-gradient(to right, rgba(6, 182, 212, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(6, 182, 212, 0.03) 1px, transparent 1px)",
+          },
+          animation: {
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'float': 'float 6s ease-in-out infinite',
+          },
+          keyframes: {
+            scan: {
+              '0%': { transform: 'translateY(-100%)' },
+              '100%': { transform: 'translateY(100%)' },
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-10px)' },
+            },
+            fadeIn: {
+              'from': { opacity: '0', transform: 'translateY(10px)' },
+              'to': { opacity: '1', transform: 'translateY(0)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+    .grid-bg {
+      background-image: linear-gradient(to right, rgba(6, 182, 212, 0.03) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(6, 182, 212, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    .radial-glow {
+      background: radial-gradient(ellipse at center, rgba(6, 182, 212, 0.12) 0%, transparent 70%);
+    }
+
+    .scan-line::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent, rgba(6, 182, 212, 0.08), transparent);
+      animation: scan 4s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes scan {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100%); }
+    }
+
+    .corner-accent {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border: 1px solid #06b6d4;
+    }
+    .corner-tl { top: 0; left: 0; border-right: 0; border-bottom: 0; }
+    .corner-tr { top: 0; right: 0; border-left: 0; border-bottom: 0; }
+    .corner-bl { bottom: 0; left: 0; border-right: 0; border-top: 0; }
+    .corner-br { bottom: 0; right: 0; border-left: 0; border-top: 0; }
+
+    .input-glow:focus {
+      border-color: #06b6d4;
+      box-shadow: 0 0 0 1px rgba(6, 182, 212, 0.3), 0 0 20px rgba(6, 182, 212, 0.2);
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0a0f1a; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #334155; }
+    ::selection { background: rgba(6, 182, 212, 0.3); color: #e2e8f0; }
+  </style>
+</head>
+<body class="min-h-screen grid-bg relative overflow-hidden bg-palantir-bg text-palantir-text">
+  <!-- Background glow -->
+  <div class="absolute inset-0 radial-glow pointer-events-none"></div>
+
+  <!-- Animated particles -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute w-1 h-1 bg-cyan-500/30 rounded-full animate-pulse" style="left: 10%; top: 20%;"></div>
+    <div class="absolute w-1 h-1 bg-cyan-500/30 rounded-full animate-pulse" style="left: 80%; top: 30%; animation-delay: 0.5s;"></div>
+    <div class="absolute w-1 h-1 bg-cyan-500/30 rounded-full animate-pulse" style="left: 30%; top: 70%; animation-delay: 1s;"></div>
+    <div class="absolute w-1 h-1 bg-cyan-500/30 rounded-full animate-pulse" style="left: 70%; top: 80%; animation-delay: 1.5s;"></div>
+    <div class="absolute w-1 h-1 bg-cyan-500/30 rounded-full animate-pulse" style="left: 50%; top: 50%; animation-delay: 2s;"></div>
+  </div>
+
+  <!-- Main content -->
+  <div class="relative z-10 min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="w-full py-6 px-8 border-b border-slate-800/50 backdrop-blur-sm">
+      <div class="max-w-7xl mx-auto flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="relative">
+            <div class="w-10 h-10 border border-cyan-500/50 flex items-center justify-center">
+              <div class="w-6 h-6 border border-cyan-400/70 transform rotate-45"></div>
+            </div>
+            <div class="absolute -top-1 -right-1 w-2 h-2 bg-cyan-500 rounded-full animate-pulse"></div>
+          </div>
+          <span class="text-xl font-light tracking-[0.2em] text-slate-100">PALANTIR</span>
+        </div>
+        <nav class="flex items-center gap-6 text-xs font-medium tracking-wider text-slate-400">
+          <a href="#" class="hover:text-cyan-400 transition-colors uppercase">Platform</a>
+          <a href="#" class="hover:text-cyan-400 transition-colors uppercase">Solutions</a>
+          <a href="#" class="hover:text-cyan-400 transition-colors uppercase">Company</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Login section -->
+    <main class="flex-1 flex items-center justify-center px-4 py-12">
+      <div class="w-full max-w-md">
+        <!-- Login card -->
+        <div class="relative bg-slate-900/80 backdrop-blur-xl border border-slate-700/50 rounded-sm scan-line">
+          <!-- Corner accents -->
+          <div class="corner-accent corner-tl"></div>
+          <div class="corner-accent corner-tr"></div>
+          <div class="corner-accent corner-bl"></div>
+          <div class="corner-accent corner-br"></div>
+
+          <!-- Card content -->
+          <div class="relative p-8 md:p-10">
+            <!-- Status indicator -->
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2 px-4 py-1.5 bg-slate-800/90 border border-slate-600/50 rounded-full">
+              <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></div>
+              <span class="text-[10px] uppercase tracking-widest text-emerald-400">Secure Channel</span>
+            </div>
+
+            <!-- Title -->
+            <div class="text-center mb-8">
+              <h1 class="text-2xl font-light text-slate-100 tracking-wide mb-2">Authorized Access Only</h1>
+              <p class="text-sm text-slate-500 font-mono">// Authentication required for network entry</p>
+            </div>
+
+            <!-- Divider -->
+            <div class="flex items-center gap-3 mb-8">
+              <div class="flex-1 h-px bg-gradient-to-r from-transparent via-slate-600/50 to-transparent"></div>
+            </div>
+
+            <!-- Login form -->
+            <form id="loginForm" class="space-y-5">
+              <!-- Email field -->
+              <div class="space-y-2">
+                <label class="flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-slate-400">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M16 12H8m8 0l-4-4m4 4-4 4M8 12l4-4m-4 4 4 4"/>
+                  </svg>
+                  Identity
+                </label>
+                <div class="relative">
+                  <input type="email" id="email" placeholder="authorized@palantir.com" required
+                    class="input-glow w-full bg-slate-800/50 border border-slate-600/50 text-slate-100 px-4 py-3.5 font-mono text-sm focus:outline-none transition-all duration-300 placeholder:text-slate-600">
+                  <div class="absolute right-3 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-cyan-500/20"></div>
+                </div>
+              </div>
+
+              <!-- Password field -->
+              <div class="space-y-2">
+                <label class="flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-slate-400">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M12 15v2m0-8V5a1 1 0 011-1h0a1 1 0 011 1v2m-6 0h10a1 1 0 011 1v8a1 1 0 01-1 1H6a1 1 0 01-1-1V8a1 1 0 011-1z"/>
+                  </svg>
+                  Clearance
+                </label>
+                <div class="relative">
+                  <input type="password" id="password" placeholder="••••••••••••" required
+                    class="input-glow w-full bg-slate-800/50 border border-slate-600/50 text-slate-100 px-4 py-3.5 font-mono text-sm focus:outline-none transition-all duration-300 placeholder:text-slate-600">
+                  <button type="button" id="togglePassword"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-cyan-400 transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/>
+                      <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Options -->
+              <div class="flex items-center justify-between text-xs">
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input type="checkbox" class="w-3.5 h-3.5 rounded border-slate-600 bg-slate-800/50 text-cyan-500 focus:ring-cyan-500/20">
+                  <span class="text-slate-500 hover:text-slate-300 transition-colors">Persistent session</span>
+                </label>
+                <a href="#" class="text-cyan-500/80 hover:text-cyan-400 transition-colors">Reset credentials</a>
+              </div>
+
+              <!-- Submit button -->
+              <button type="submit" id="submitBtn"
+                class="relative w-full group overflow-hidden bg-gradient-to-r from-cyan-600 via-cyan-500 to-cyan-600 hover:from-cyan-500 hover:via-cyan-400 hover:to-cyan-500 transition-all duration-300">
+                <span id="btnText" class="flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-medium uppercase tracking-widest text-white">
+                  <span>Establish Link</span>
+                  <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                  </svg>
+                </span>
+              </button>
+            </form>
+
+            <!-- Footer -->
+            <div class="mt-8 pt-6 border-t border-slate-700/50 text-center">
+              <p class="text-[10px] uppercase tracking-widest text-slate-600">Restricted Access • Authorized Personnel Only</p>
+              <div class="flex items-center justify-center gap-2 mt-3">
+                <div class="w-1 h-1 bg-cyan-500/50 rounded-full"></div>
+                <div class="w-1 h-1 bg-cyan-500/50 rounded-full animate-pulse"></div>
+                <div class="w-1 h-1 bg-cyan-500/50 rounded-full"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom info -->
+        <div class="mt-6 text-center">
+          <p class="text-xs text-slate-500 font-mono">
+            <span class="text-cyan-500/70">●</span> System Status: <span class="text-emerald-400">Operational</span>
+          </p>
+          <p class="text-[10px] text-slate-600 mt-2">All access attempts are logged and monitored.</p>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full py-4 px-8 border-t border-slate-800/50">
+      <div class="max-w-7xl mx-auto flex items-center justify-between text-[10px] text-slate-600 uppercase tracking-wider">
+        <span>© 2026 Palantir Technologies Inc.</span>
+        <div class="flex items-center gap-4">
+          <a href="#" class="hover:text-slate-400 transition-colors">Privacy</a>
+          <a href="#" class="hover:text-slate-400 transition-colors">Terms</a>
+          <a href="#" class="hover:text-slate-400 transition-colors">Security</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Password toggle
+    const toggleBtn = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+    toggleBtn.addEventListener('click', () => {
+      const type = passwordInput.type === 'password' ? 'text' : 'password';
+      passwordInput.type = type;
+      toggleBtn.innerHTML = type === 'password'
+        ? `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/>
+            <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+           </svg>`
+        : `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858-5.908a9.97 9.97 0 012.122-.232c4.478 0 8.268 2.943 9.543 7a9.953 9.953 0 01-2.26 4.38M15 12l-3-3m0 0l-3 3m3-3v8"/>
+           </svg>`;
+    });
+
+    // Form submission
+    const form = document.getElementById('loginForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const btnText = document.getElementById('btnText');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const originalText = btnText.innerHTML;
+      btnText.innerHTML = `
+        <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+        </svg>
+        <span>Authenticating...</span>
+      `;
+      submitBtn.disabled = true;
+
+      // Simulate auth
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      alert('Authentication initiated. Welcome to the network.');
+      btnText.innerHTML = originalText;
+      submitBtn.disabled = false;
+    });
+  </script>
+</body>
+</html>
